@@ -69,9 +69,6 @@
 - (IBAction)didPressLink:(id)sender {
 }
 
-
-
-
 #pragma mark - Upload To DropBox section
 
 //upload all files from Documents to DropBox
@@ -115,7 +112,7 @@
     
     for (int i = 0; i < arrayOfImage.count; i++) {
         if (![self isPhotoAlredyExistOnDropBox:[arrayOfImage[i] photoFile]]) {
-            //NSLog(@"Name of photo: %@", [arrayOfImage[i] photoFile]);
+            //NSLog(@"\n\n\nPhoto name: %@\n\n\n", [arrayOfImage[i] photoFile]);
             localPath = [localDir stringByAppendingPathComponent:[arrayOfImage[i] photoFile]];
             [self.restClient uploadFile:[arrayOfImage[i] photoFile] toPath:destDir withParentRev:nil fromPath:localPath];
         }
@@ -125,31 +122,30 @@
 //remove photos from DropBox, which were deleted from Documents directory
 - (void)removeDeprecatedImages {
     
-    //doesn't work
-    
     NSArray *imagesInDocuments = [[PhotosController sharedController].fetchedResultsController fetchedObjects];
     
     for (int i = 0; i < self.arrayOfDropBoxPhoto.count; i++) {
-        NSInteger counter = 0;
-        for (int j = 0; j < imagesInDocuments.count; j++) {
-            //NSLog(@"\n\n\n%@\n", [self.arrayOfDropBoxPhoto[i] filename]);
-            //NSLog(@"%@\n\n\n", [imagesInDocuments[j] photoFile]);
-            if ([self.arrayOfDropBoxPhoto[i] filename] != [imagesInDocuments[j] photoFile]) {
-                break;
-            }
-            counter++;
-        }
-        
-        if (counter == imagesInDocuments.count) {
+        if ([self isDeprecatedPhoto:[self.arrayOfDropBoxPhoto[i] filename] inArray:imagesInDocuments]) {
             
             [self deletePhotoFromDropBox:[self.arrayOfDropBoxPhoto[i] filename]];
         }
     }
 }
 
+//return YES if photo is deprecated, else return NO
+- (BOOL)isDeprecatedPhoto:(NSString *)photoName inArray:(NSArray *)imagesInDocuments {
+    
+    for (int i = 0; i < imagesInDocuments.count; i++) {
+        if ([photoName isEqualToString:@"CoreData"] || [[imagesInDocuments[i] photoFile] isEqualToString:photoName]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 //delete photo from DropBox
 - (void)deletePhotoFromDropBox:(NSString *)fileName {
-    
     NSString *destPath = [NSString stringWithFormat:@"/%@", fileName];
     [self.restClient deletePath:destPath];
 }
@@ -157,19 +153,17 @@
 //if CoreData directory on DropBox is empty return YES, else NO
 - (BOOL)isCoreDataDirEmpty {
     
-    BOOL empty = YES;
     if (self.arrayOfMetaData == nil) {
-        empty = NO;
+        return  NO;
     }
     
-    return empty;
+    return YES;
 }
 
 //if photo on DropBox exists return YES, else NO
 - (BOOL)isPhotoAlredyExistOnDropBox:(NSString *)nameOfPhoto {
     
     for (int i = 0; i < self.arrayOfDropBoxPhoto.count; i++) {
-        //NSLog(@"Name photo on DropBox: %@\n", self.arrayOfDropBoxPhoto[i]);
         if ([[self.arrayOfDropBoxPhoto[i] filename] isEqualToString:nameOfPhoto]) {
             return YES;
         }
@@ -177,9 +171,6 @@
     
     return NO;
 }
-
-
-
 
 #pragma mark - Download from DropBox section
 
@@ -220,9 +211,9 @@
     NSString *destPath;
     
     for (int i = 0; i < self.arrayOfDropBoxPhoto.count; i++) {
-        if (![self isPhotoExistInDocuments:[self.arrayOfDropBoxPhoto[i] filename]]) {
-            localPath = [localDir stringByAppendingPathComponent:[self.arrayOfDropBoxPhoto[i] filename]];
-            destPath = [NSString stringWithFormat:@"%@%@", destDir, [self.arrayOfDropBoxPhoto[i] filename]];
+        if (![self isPhotoExistInDocuments:self.arrayOfDropBoxPhoto[i]]) {
+            localPath = [localDir stringByAppendingPathComponent:[[self.arrayOfDropBoxPhoto objectAtIndex:i] filename]];
+            destPath = [NSString stringWithFormat:@"%@%@", destDir, [[self.arrayOfDropBoxPhoto objectAtIndex:i] filename]];
             [self.restClient loadFile:destPath intoPath:localPath];
         }
     }
@@ -230,7 +221,7 @@
 }
 
 //return YES if photo must be deleted
-- (BOOL)isPhotoToDelete:(NSString *)fileName {
+- (BOOL)isPhotoToDelete {
     
     BOOL delete = NO;
     
@@ -239,12 +230,9 @@
     return delete;
 }
 
-//return YES if photo already exist in Documents directory
-- (BOOL)isPhotoExistInDocuments:(NSString *)fileName {
+- (BOOL)isPhotoExistInDocuments:(NSString *)photoName {
     
     BOOL exist = NO;
-    
-    
     
     return exist;
 }
@@ -259,9 +247,6 @@
     NSError *error;
     [fileManager removeItemAtPath:localPath error:&error];
 }
-
-
-
 
 #pragma mark - DBRestClientDelegate section
 

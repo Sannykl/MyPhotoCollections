@@ -113,6 +113,7 @@
         NSString *photoFile = [[NSString alloc] initWithFormat:@"%@%@.png", self.photoName, [NSDate date]];
         NSString *imageFile = [[[[[[photoFile stringByReplacingOccurrencesOfString:@" " withString:@""] stringByReplacingOccurrencesOfString:@"/" withString:@""] stringByReplacingOccurrencesOfString:@"-" withString:@""] stringByReplacingOccurrencesOfString:@"_" withString:@""] stringByReplacingOccurrencesOfString:@"+" withString:@""] stringByReplacingOccurrencesOfString:@":" withString:@""];
         [[PhotosController sharedController].photo setPhotoFile:imageFile];
+        //NSLog(@"\n\nPhoto file: %@\n\n", [PhotosController sharedController].photo.photoFile);
         
         [[CollectionsController sharedController] collection:self.collectionName forImage:self.photoName];
         //NSLog(@"Photo with filters: %@", self.photoWithFilters);

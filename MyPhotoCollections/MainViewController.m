@@ -14,6 +14,7 @@
 #import "CollectionsController.h"
 #import "CurrentCollectionController.h"
 #import "DropBoxViewController.h"
+#import "PhotosController.h"
 
 #import <DropboxSDK/DropboxSDK.h>
 
@@ -146,8 +147,9 @@
      
      //NSLog(@"Date: %@ \nLocation: %@", dateOfCreation, location);*/
     
-    Photo *photo = (Photo *)[NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:[StorageController sharedController].managedObjectContext];
-    viewController.currentPhoto = photo;
+    [PhotosController sharedController].photo = (Photo *)[NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:[StorageController sharedController].managedObjectContext];
+    NSLog(@"Photo object created!!!");
+    viewController.currentPhoto = [PhotosController sharedController].photo;
     
     
     [picker dismissViewControllerAnimated:NO completion:^{

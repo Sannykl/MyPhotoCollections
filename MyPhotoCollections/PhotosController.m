@@ -53,7 +53,7 @@
     NSData *imageData = UIImagePNGRepresentation(photo);
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [paths objectAtIndex:0];
-    //NSLog(@"\n%@_%@.png\n", collectionPhoto, date);
+    //NSLog(@"\n\nPhoto object: %@\n\n", photo);
     NSString *imagePath = [documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@", self.photo.photoFile]];
     //NSLog(@"\nImage Path::: %@", imagePath);
     
