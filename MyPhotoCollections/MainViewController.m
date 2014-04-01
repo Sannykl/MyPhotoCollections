@@ -83,6 +83,10 @@
         [CurrentCollectionController sharedController].currentCollection =  self.collection;
     }
     
+    if ([segue.identifier isEqualToString:@"dropBox"]) {
+        DropBoxViewController *dropBoxController = (DropBoxViewController *)[segue destinationViewController];
+        dropBoxController.mainController = self;
+    }
 }
 
 #pragma mark - Table View section

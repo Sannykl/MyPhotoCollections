@@ -6,12 +6,14 @@
 //  Copyright (c) 2014 Sanny. All rights reserved.
 //
 
+#import "MainViewController.h"
+
 @interface DropBoxViewController : UIViewController
 @property (nonatomic, strong)NSFetchRequest *fetchRequest;
+@property (nonatomic, strong)MainViewController *mainController;
 
 - (IBAction)uploadToDropBox:(id)sender;
 - (IBAction)downloadFromDropBox:(id)sender;
 - (IBAction)backToMain:(id)sender;
-- (IBAction)didPressLink:(id)sender;
 @end
 

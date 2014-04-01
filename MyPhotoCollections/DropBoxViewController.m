@@ -10,6 +10,7 @@
 #import "PhotosController.h"
 #import <DropboxSDK/DropboxSDK.h>
 #import "CollectionsController.h"
+#import "StorageController.h"
 
 @interface DropBoxViewController () <DBRestClientDelegate>
 
@@ -61,13 +62,13 @@
 }
 
 - (IBAction)backToMain:(id)sender {
- 
+    [self.mainController viewWillAppear:YES];
     [[CollectionsController sharedController] reloadFetchResult];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)didPressLink:(id)sender {
-}
+
+
 
 #pragma mark - Upload To DropBox section
 
@@ -172,11 +173,15 @@
     return NO;
 }
 
+
+
+
 #pragma mark - Download from DropBox section
 
 //Download all files from DropBox to Documents
 - (IBAction)downloadFromDropBox:(id)sender {
     
+    [self removeDeprecatedImagesFromDocuments];
     [self downloadCoreData];
     [self downloadPhoto];
 }
@@ -211,7 +216,7 @@
     NSString *destPath;
     
     for (int i = 0; i < self.arrayOfDropBoxPhoto.count; i++) {
-        if (![self isPhotoExistInDocuments:self.arrayOfDropBoxPhoto[i]]) {
+        if (![self isPhotoExistInDocuments:[self.arrayOfDropBoxPhoto[i] filename]]) {
             localPath = [localDir stringByAppendingPathComponent:[[self.arrayOfDropBoxPhoto objectAtIndex:i] filename]];
             destPath = [NSString stringWithFormat:@"%@%@", destDir, [[self.arrayOfDropBoxPhoto objectAtIndex:i] filename]];
             [self.restClient loadFile:destPath intoPath:localPath];
@@ -220,21 +225,47 @@
     
 }
 
-//return YES if photo must be deleted
-- (BOOL)isPhotoToDelete {
+//remove deprecated photos from Documents directory
+- (void)removeDeprecatedImagesFromDocuments {
     
-    BOOL delete = NO;
+    NSArray *arrayOfPhotos = [[PhotosController sharedController].fetchedResultsController fetchedObjects];
     
-    
-    
-    return delete;
+    for (int i = 0; i < arrayOfPhotos.count; i++) {
+        if ([self isPhotoToDelete:[arrayOfPhotos[i] photoFile]]) {
+            [self deleteFileFromDocuments:[arrayOfPhotos[i] photoFile]];
+        }
+    }
 }
 
+//return YES if photo must be deleted
+- (BOOL)isPhotoToDelete:(NSString *)photoName {
+    
+    NSLog(@"\n\n\nPhoto name: %@\n\n\n", photoName);
+    
+    for (int i = 0; i < self.arrayOfDropBoxPhoto.count; i++) {
+        if ([photoName isEqualToString:[self.arrayOfDropBoxPhoto[i] filename]]) {
+            NSLog(@"\nPhoto to delete: %@\n", [self.arrayOfDropBoxPhoto[i] filename]);
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+//return YES if photo exist in Documents directory
 - (BOOL)isPhotoExistInDocuments:(NSString *)photoName {
     
-    BOOL exist = NO;
+    //NSLog(@"\n\n\nPhoto name: %@\n\n\n", photoName);
     
-    return exist;
+    NSFetchRequest *fetchRequest = [[PhotosController sharedController].fetchedResultsController fetchRequest];
+    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", @"photoFile", photoName]];
+    
+    NSError *error;
+    NSArray *fetchArray = [[StorageController sharedController].managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    //NSLog(@"\n\nFetch request: %@\n\n", fetchArray);
+    
+    return NO;
 }
 
 //delete file from Documents directory
@@ -245,8 +276,14 @@
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError *error;
+    
+    NSLog(@"\n\nPath to elete: %@\n\n", localPath);
+    
     [fileManager removeItemAtPath:localPath error:&error];
 }
+
+
+
 
 #pragma mark - DBRestClientDelegate section
 
