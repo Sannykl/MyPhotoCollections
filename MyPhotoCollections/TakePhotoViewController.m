@@ -41,12 +41,8 @@
 	// Do any additional setup after loading the view.
     [self.photoBlock setImage:self.myPhoto];
     
-    //self.currentPhoto = (Photo *)[NSEntityDescription entityForName:@"Photo" inManagedObjectContext:self.managedObjectContext];
-    //[[PhotosController sharedController] createPhotoObject];
-    
-    [self setLocation:@"Ukraine, Cherkassy"];
-    [self setCreationDate:[NSDate date]];
-    //[self setNumberOfPhoto:[NSNumber numberWithInt:10]];
+    //[self setLocation:@"Ukraine, Cherkassy"];
+    //[self setCreationDate:[NSDate date]];
     
     self.collectionName = [self.currentCollection collectionName];
     self.photoName = [self.currentCollection titlePhoto];
@@ -72,12 +68,7 @@
     
     if ([segue.identifier isEqualToString:@"addEffects"]) {
         PhotoFiltersViewController *filtersController = (PhotoFiltersViewController *)[segue destinationViewController];
-        /*if (self.imageWithFilter) {
-         filtersController.originalImage = self.photoWithFilters;
-         } else {
          filtersController.originalImage = self.myPhoto;
-         }*/
-        filtersController.originalImage = self.myPhoto;
         filtersController.delegate = self;
     }
     

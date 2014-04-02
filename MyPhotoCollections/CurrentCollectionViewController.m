@@ -133,7 +133,7 @@
     [self viewWillAppear:YES];
     
     [[CurrentCollectionController sharedController] setCurrentCollection:self.collection];
-    NSLog(@"\n\n\nFetch request array: %@\n\n\n", [[CurrentCollectionController sharedController].fetchedResultsController fetchedObjects]);
+    //NSLog(@"\n\n\nFetch request array: %@\n\n\n", [[CurrentCollectionController sharedController].fetchedResultsController fetchedObjects]);
 }
 
 @end

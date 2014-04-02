@@ -84,22 +84,10 @@
         [[PhotosController sharedController] deletePhotoObject:self.chosenPhoto];
         [[StorageController sharedController] saveContext];
         
-        //NSLog([[CollectionsController sharedController] isEmptyCollection:collection] ? @"Is empty Collection? - YES" : @"Is empty collection? - NO");
-        
-        //NSLog(@"NSINTEGER NUMBER: %d", [[CollectionsController sharedController] isEmptyCollection:collection]);
-        
-        //[self.navigationController popToRootViewControllerAnimated:YES];
-        
-        //BOOL empty = [[CollectionsController sharedController] isEmptyCollection:self.chosenPhoto.collectionName];
-        
-        //NSLog(empty ? @"Is empty collection: YES" : @"Is empty collection: NO");
-        
         if (![[CollectionsController sharedController] isEmptyCollection:self.chosenPhoto.collectionName]) {
             [self.delegate reloadCurrentCollection];
             [self.navigationController popViewControllerAnimated:YES];
         } else {
-            //NSLog(@"BLAAAAAAAAAAAAAAAAAAA!!!!!!!!!!!!!!");
-            //[self.delegate reloadMainView];
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }

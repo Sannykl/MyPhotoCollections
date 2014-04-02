@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0EC874293AB14ED09A33ED09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6157676BB524441EAB856D6C /* libPods.a */; };
-		1E1984EE18E9B10A00426D93 /* DropBoxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1984ED18E9B10A00426D93 /* DropBoxController.m */; };
 		1E9C9F7118E18A19004DF4DE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E9C9F7018E18A19004DF4DE /* Foundation.framework */; };
 		1E9C9F7318E18A19004DF4DE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E9C9F7218E18A19004DF4DE /* CoreGraphics.framework */; };
 		1E9C9F7518E18A19004DF4DE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E9C9F7418E18A19004DF4DE /* UIKit.framework */; };
@@ -56,8 +55,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1E1984EC18E9B10A00426D93 /* DropBoxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxController.h; sourceTree = "<group>"; };
-		1E1984ED18E9B10A00426D93 /* DropBoxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxController.m; sourceTree = "<group>"; };
 		1E9C9F6D18E18A19004DF4DE /* MyPhotoCollections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyPhotoCollections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E9C9F7018E18A19004DF4DE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1E9C9F7218E18A19004DF4DE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -144,15 +141,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1E1984EB18E9B0F000426D93 /* DropBoxController */ = {
-			isa = PBXGroup;
-			children = (
-				1E1984EC18E9B10A00426D93 /* DropBoxController.h */,
-				1E1984ED18E9B10A00426D93 /* DropBoxController.m */,
-			);
-			name = DropBoxController;
-			sourceTree = "<group>";
-		};
 		1E9C9F6418E18A19004DF4DE = {
 			isa = PBXGroup;
 			children = (
@@ -262,7 +250,6 @@
 		1E9C9FA818E18C6D004DF4DE /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1E1984EB18E9B0F000426D93 /* DropBoxController */,
 				1E9C9FEE18E195D3004DF4DE /* CurrentCollectionController */,
 				1E9C9FEA18E19559004DF4DE /* PhotosController */,
 				1E9C9FE618E19507004DF4DE /* CollectionsController */,
@@ -567,7 +554,6 @@
 				1E9C9FC118E1916B004DF4DE /* TakePhotoViewController.m in Sources */,
 				1E9C9FAD18E18F45004DF4DE /* Settings.m in Sources */,
 				1E9C9FED18E1956F004DF4DE /* PhotosController.m in Sources */,
-				1E1984EE18E9B10A00426D93 /* DropBoxController.m in Sources */,
 				1E9C9FC518E191FF004DF4DE /* CurrentCollectionViewController.m in Sources */,
 				1E9C9FE118E1947D004DF4DE /* StorageController.m in Sources */,
 				1E9C9FB118E18F76004DF4DE /* Photo.m in Sources */,

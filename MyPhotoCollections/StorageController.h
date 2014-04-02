@@ -13,4 +13,5 @@
 
 + (instancetype)sharedController;
 - (void)saveContext;
+- (void)reset;
 @end

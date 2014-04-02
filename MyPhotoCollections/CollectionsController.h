@@ -18,4 +18,5 @@
 - (void)isCollectionToDelete:(NSString *)collectionName;
 - (BOOL)isEmptyCollection:(NSString *)collectionName;
 - (void)reloadFetchResult;
+- (void)reset;
 @end

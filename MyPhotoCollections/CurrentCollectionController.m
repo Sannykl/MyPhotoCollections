@@ -23,6 +23,10 @@
     return __sharedInstance;
 }
 
+- (void)reset {
+    _fetchedResultsController = nil;
+}
+
 - (NSFetchedResultsController *)fetchedResultsController {
     if (_fetchedResultsController != nil) {
         return _fetchedResultsController;

@@ -34,6 +34,5 @@
 @optional
 
 - (void)reloadCurrentCollection;
-- (void)reloadMainView;
 
 @end

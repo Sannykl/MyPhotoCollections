@@ -18,7 +18,7 @@
 
 #import <DropboxSDK/DropboxSDK.h>
 
-@interface MainViewController () <ShowPhotoViewControllerDelegate>
+@interface MainViewController ()
 
 @property NSInteger numberOfCollections;
 @end
@@ -57,12 +57,15 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    
     [super viewWillAppear:animated];
     
-    [self fetchedResultsController];
+    //[self fetchedResultsController];
     [self.myTable reloadData];
     
     [self viewDidLoad];
+    
+    [[self fetchedResultsController] fetchRequest];
     
     NSError *error = nil;
     if (![[CollectionsController sharedController].fetchedResultsController performFetch:&error]) {
@@ -74,7 +77,8 @@
 
 #pragma mark -
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
     if ([segue.identifier isEqualToString:@"showCollection"]) {
         CurrentCollectionViewController *ccvc = (CurrentCollectionViewController *)[segue destinationViewController];
         NSIndexPath *indexPath = [self.myTable indexPathForSelectedRow];
@@ -82,20 +86,17 @@
         ccvc.collection = self.collection;
         [CurrentCollectionController sharedController].currentCollection =  self.collection;
     }
-    
-    if ([segue.identifier isEqualToString:@"dropBox"]) {
-        DropBoxViewController *dropBoxController = (DropBoxViewController *)[segue destinationViewController];
-        dropBoxController.mainController = self;
-    }
 }
 
 #pragma mark - Table View section
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
     return 1;
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
     [[CollectionsController sharedController] reloadFetchResult];
     //NSLog(@"\n\n\nCount of objects: %d\n\n\n", [[[CollectionsController sharedController].fetchedResultsController fetchedObjects] count]);
     
@@ -104,7 +105,8 @@
     return [sectionInfo numberOfObjects];
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     NSString *cellIdentifire = @"cell";
     UITableViewCell *cell = [self.myTable dequeueReusableCellWithIdentifier:cellIdentifire];
     //NSLog(@"Index path: %@", indexPath);
@@ -121,22 +123,24 @@
 #pragma mark - Image Picker Controller section
 
 - (IBAction)takePhoto:(id)sender {
+    
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    //picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    //picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-    picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+    picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    picker.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
+    //picker.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
     picker.allowsEditing = NO;
     [self presentViewController:picker animated:YES completion:nil];
     picker.delegate = self;
 }
 
--(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
     TakePhotoViewController *viewController = [[UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"takeNewPhoto"];
     viewController.myPhoto = [info objectForKey:UIImagePickerControllerOriginalImage];
     viewController.title = @"New photo";
     
     //RECEIVING EXIF DATA
-    /*NSDictionary *metaData = [info objectForKey:UIImagePickerControllerMediaMetadata];
+    NSDictionary *metaData = [info objectForKey:UIImagePickerControllerMediaMetadata];
      
      CFStringRef originalDate = (__bridge CFStringRef)[metaData objectForKey:(id)kCGImagePropertyExifDateTimeOriginal];
      NSString *dateOfCreation = (__bridge NSString *)originalDate;
@@ -149,7 +153,7 @@
      NSString *location = (__bridge NSString *)photoLocation;
      viewController.location = location;
      
-     //NSLog(@"Date: %@ \nLocation: %@", dateOfCreation, location);*/
+     //NSLog(@"Date: %@ \nLocation: %@", dateOfCreation, location);
     
     [PhotosController sharedController].photo = (Photo *)[NSEntityDescription insertNewObjectForEntityForName:@"Photo" inManagedObjectContext:[StorageController sharedController].managedObjectContext];
     NSLog(@"Photo object created!!!");
@@ -161,14 +165,6 @@
                            animated:NO
                          completion:nil];
     }];
-}
-
-#pragma mark - ShowPhotoViewControllerDelegate section
-
-- (void)reloadMainView {
-    [self viewWillAppear:YES];
-    
-    //[[CollectionsController sharedController] reloadFetchRequest];
 }
 
 #pragma mark - DropBox section

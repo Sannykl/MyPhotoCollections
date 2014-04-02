@@ -15,4 +15,5 @@
 
 + (instancetype)sharedController;
 - (void)setCurrentCollection:(Collection *)currentCollection;
+- (void)reset;
 @end

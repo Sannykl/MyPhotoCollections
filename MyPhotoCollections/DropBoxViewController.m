@@ -11,6 +11,7 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import "CollectionsController.h"
 #import "StorageController.h"
+#import "CurrentCollectionController.h"
 
 @interface DropBoxViewController () <DBRestClientDelegate>
 
@@ -62,8 +63,9 @@
 }
 
 - (IBAction)backToMain:(id)sender {
-    [self.mainController viewWillAppear:YES];
-    [[CollectionsController sharedController] reloadFetchResult];
+    [[StorageController sharedController] reset];
+    [[CollectionsController sharedController] reset];
+    [[CurrentCollectionController sharedController] reset];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -254,17 +256,7 @@
 
 //return YES if photo exist in Documents directory
 - (BOOL)isPhotoExistInDocuments:(NSString *)photoName {
-    
-    //NSLog(@"\n\n\nPhoto name: %@\n\n\n", photoName);
-    
-    NSFetchRequest *fetchRequest = [[PhotosController sharedController].fetchedResultsController fetchRequest];
-    [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%K = %@", @"photoFile", photoName]];
-    
-    NSError *error;
-    NSArray *fetchArray = [[StorageController sharedController].managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
-    //NSLog(@"\n\nFetch request: %@\n\n", fetchArray);
-    
+        
     return NO;
 }
 
